@@ -1,0 +1,12 @@
+.whole-page{
+    /* background-color: #EDE4FF !important; */
+    height: 100vh;
+    background-image: url("../CarLandscape-HQ-01.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+.main-container{
+    background-image: "../CarLandscape-HQ-01.jpg";
+}

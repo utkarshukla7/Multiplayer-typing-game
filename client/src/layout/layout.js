@@ -1,14 +1,14 @@
 import React from 'react'
 import Header from '../header/header.js'
-
+import "./layout.css"
 const Layout = (props) => {
     return (
-        <>
+        <div className='whole-page'>
             <Header />
-            <main style={{ minHeight: '80vh' }}>
+            <main className='main-container'>
                 {props.children}
             </main>
-        </>
+        </div>
     );
 };
 
