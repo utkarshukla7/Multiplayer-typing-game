@@ -965,7 +965,6 @@ export const generateText = async (req, res) => {
     };
 
     const paragraph = await generateRandomParagraph(level);
-    console.log(paragraph);
     res.status(200).send({
       success: true,
       message: "paragraph generated succesfully",

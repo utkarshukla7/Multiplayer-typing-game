@@ -1,5 +1,7 @@
-import { useState, useEffect ,useRef} from "react";
+import { useState, useEffect, useRef } from "react";
 import "./TypingTest.css";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export const TypingTest = () => {
   const [ind, setInd] = useState(0);
@@ -8,33 +10,44 @@ export const TypingTest = () => {
   const [inputArray, setInputArray] = useState([]);
   const [textArray, setTextArray] = useState([]);
   const underlinedElementRef = useRef(null);
-  
+  const [level, setLevel] = useState(1);
+  const [count, setCount] = useState(30);
+  const [hasstarted, sethasstarted] = useState(false);
+  const [totalchar, setTotalchar] = useState(0);
+
   const times = useRef({
     startTime: null,
     endTime: null,
     timeDifference: null,
     started: false,
   });
+  const navigate = useNavigate();
 
-  const [help, setHelp] = useState(0);
-  useEffect(()=>{
-    // const text = "This is a sample text with long input so that we can test the typing speed of the user. okay adding one more line to see output its not working i dont knwo wha tot do"
-    const text = "this is a sample";
-    const tt = text.split("");
-    setTextArray(tt);
-  },[inputArray]);
-  
   useEffect(() => {
+    axios
+      .post("http://localhost:5000/api/utility/generatetext", { level: level })
+      .then((response) => {
+        if (response.data.success) {
+          const tt = response.data.paragraph.split("");
+          setTextArray(tt);
+          setFlag(true);
+        }
+      });
+  }, []);
+  useEffect(() => {
+    setTotalchar((prevkey) => (prevkey + 1));
+    console.log(totalchar);
     if(times.current.started === false) {
       times.current.started = true;
       times.current.startTime = new Date();
       console.log(times.current.startTime, "start");
     }
+    
     const temp = [];
     let c = 0;
     const giveColor = (index) => {
       if(index === textArray.length - 1) {
-        if(inputArray.length > textArray.length) {
+        if(inputArray.length >= textArray.length) {
           times.current.endTime = new Date();
           times.current.timeDifference = times.current.endTime - times.current.startTime;
           console.log(times.current.endTime, "end");
@@ -59,14 +72,29 @@ export const TypingTest = () => {
       temp.push({ color: giveColor(i), char: textArray[i], ind: i });
     }
     setArr(temp);
+    if(times.current.timeDifference) {
+      console.log(times.current.timeDifference, "diff");
+      if(times.current.timeDifference / 1000 > 30) {
+        return;
+      }
+    }
+    if(times.current.endTime){
+      handleend();
+    }
   }, [inputArray]);
 
   const handleInputChange = (e) => {
-    if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(e.key)) {
+    if (!hasstarted) {
+      sethasstarted(true);
+    }
+    if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(e.key)) {
       return;
     }
+    setFlag(false);
     setInputArray(e.target.value.split(""));
+    sethasstarted(true);
   };
+  
   useEffect(() => {
     if (underlinedElementRef.current) {
       underlinedElementRef.current.scrollIntoView({
@@ -76,30 +104,81 @@ export const TypingTest = () => {
     }
   }, [arr]);
 
+  useEffect(() => {
+    let interval;
+
+    if (hasstarted) {
+      interval = setInterval(() => {
+        setCount((prevSeconds) => (prevSeconds > 0 ? prevSeconds - 1 : 0));
+      }, 1000);
+    }
+    return () => clearInterval(interval);
+  }, [hasstarted]);
+  
+  const handleend = () => {
+    if(times.current.endTime !== null) {
+      setCount(0);
+      console.log("words over");
+    }
+    else{
+      console.log("time over");
+    }
+    alert(totalchar);
+    // navigate("/");
+  };
+
+  useEffect(() => {
+    if (count === 0) {
+      handleend();
+    }
+  }, [count]);
+
+
+  if (textArray.length === 0) {
+    return null;
+  }
   return (
     <div>
       <div className="textbox-solo">
-      {arr.map((item) => (
-        
-        <span
-        style={{
-          color: item.color,
-          textDecoration:
-          item.ind === inputArray.length ? "underline" : "none",
-        }}
-        className="characters-solo"
-        ref={(item.ind === inputArray.length || item.ind === 0) ? underlinedElementRef : null}
-        >
-          {item.char}
-        </span>
-      ))}
+        {flag
+          ? textArray.map((item) => (
+              <span
+                style={{
+                  color: "black",
+                }}
+                className="characters-solo"
+              >
+                {item}
+              </span>
+            ))
+          : arr.map((item) => (
+              <span
+                style={{
+                  color: item.color,
+                  textDecoration:
+                    item.ind === inputArray.length ? "underline" : "none",
+                }}
+                className="characters-solo"
+                ref={
+                  item.ind === inputArray.length || item.ind === 0
+                    ? underlinedElementRef
+                    : null
+                }
+              >
+                {item.char}
+              </span>
+            ))}
       </div>
-      <input value={inputArray.join("")} onChange={handleInputChange} className="input-box-solo"></input>
-      <div className="speed-solo">
-        Speed (Words per minute)
+      <input
+        value={inputArray.join("")}
+        onChange={handleInputChange}
+        className="input-box-solo"
+      ></input>
+      <div className="speed-solo">Speed (Wpm)-- {count === 30 ? 0 : ((ind/5)*60/(30-count)).toFixed(0)}
       </div>
-      <div className="acc-solo">
-        rustee
+      <div className="acc-solo">{totalchar === 1 ? 0 :(((ind + 1)/(totalchar - 1)) * 100).toFixed(0)}%
+                {totalchar - 1}-- totalchar
+                {ind}--ind
       </div>
     </div>
   );
