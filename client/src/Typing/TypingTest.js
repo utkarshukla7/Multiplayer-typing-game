@@ -8,45 +8,38 @@ export const TypingTest = () => {
   const [inputArray, setInputArray] = useState([]);
   const [textArray, setTextArray] = useState([]);
   const underlinedElementRef = useRef(null);
-  // [
-  //   "h",
-  //   "e",
-  //   "l",
-  //   "l",
-  //   "o",
-  //   " ",
-  //   "p",
-  //   "h",
-  //   "h",
-  //   " ",
-  //   "h",
-  //   "h",
-  //   "h",
-  //   "h",
-  //   "h",
-  //   "h",
-  //   "h",
-  //   " ",
-  //   "h",
-  //   "h",
-  //   "h",
-  //   " ",
-  //   "h",
-  //   "h",
-  //   "h",
-  // ]
   
+  const times = useRef({
+    startTime: null,
+    endTime: null,
+    timeDifference: null,
+    started: false,
+  });
+
   const [help, setHelp] = useState(0);
   useEffect(()=>{
-    const text = "This is a sample text with long input so that we can test the typing speed of the user. okay adding one more line to see output its not working i dont knwo wha tot do"
+    // const text = "This is a sample text with long input so that we can test the typing speed of the user. okay adding one more line to see output its not working i dont knwo wha tot do"
+    const text = "this is a sample";
     const tt = text.split("");
     setTextArray(tt);
   },[inputArray]);
   
   useEffect(() => {
+    if(times.current.started === false) {
+      times.current.started = true;
+      times.current.startTime = new Date();
+      console.log(times.current.startTime, "start");
+    }
     const temp = [];
     let c = 0;
     const giveColor = (index) => {
+      if(index === textArray.length - 1) {
+        if(inputArray.length > textArray.length) {
+          times.current.endTime = new Date();
+          times.current.timeDifference = times.current.endTime - times.current.startTime;
+          console.log(times.current.endTime, "end");
+        }
+      }
       if (inputArray.length === 0) return "black";
       if (textArray[index] === inputArray[index]) {
         c += 1;
@@ -58,6 +51,7 @@ export const TypingTest = () => {
       if (index < inputArray.length) {
         return "red";
       }
+      
       return "black";
     };
 
