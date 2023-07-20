@@ -1,10 +1,10 @@
 import Layout from "../layout/layout";
-import { Testing } from "./Testing";
+import { TypingTest } from "../Typing/TypingTest.js";
 
 export const Single = () => {
   return (
     <Layout>
-      <Testing />
+      <TypingTest />
     </Layout>
   );
 };
