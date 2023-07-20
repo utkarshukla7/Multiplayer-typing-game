@@ -1,6 +1,6 @@
-import { useState, useEffect ,useRef} from "react";
+import { useState, useEffect, useRef } from "react";
 import "./TypingTest.css";
-
+import axios from "axios";
 export const TypingTest = () => {
   const [ind, setInd] = useState(0);
   const [flag, setFlag] = useState(true);
@@ -8,41 +8,20 @@ export const TypingTest = () => {
   const [inputArray, setInputArray] = useState([]);
   const [textArray, setTextArray] = useState([]);
   const underlinedElementRef = useRef(null);
-  // [
-  //   "h",
-  //   "e",
-  //   "l",
-  //   "l",
-  //   "o",
-  //   " ",
-  //   "p",
-  //   "h",
-  //   "h",
-  //   " ",
-  //   "h",
-  //   "h",
-  //   "h",
-  //   "h",
-  //   "h",
-  //   "h",
-  //   "h",
-  //   " ",
-  //   "h",
-  //   "h",
-  //   "h",
-  //   " ",
-  //   "h",
-  //   "h",
-  //   "h",
-  // ]
-  
-  const [help, setHelp] = useState(0);
-  useEffect(()=>{
-    const text = "This is a sample text with long input so that we can test the typing speed of the user. okay adding one more line to see output its not working i dont knwo wha tot do"
-    const tt = text.split("");
-    setTextArray(tt);
-  },[inputArray]);
-  
+  const [level, setLevel] = useState(1);
+
+  useEffect(() => {
+    axios
+      .post("http://localhost:5000/api/utility/generatetext", { level: level })
+      .then((response) => {
+        if (response.data.success) {
+          const tt = response.data.paragraph.split("");
+          setTextArray(tt);
+          setFlag(true);
+        }
+      });
+  }, []);
+  console.log(textArray);
   useEffect(() => {
     const temp = [];
     let c = 0;
@@ -68,9 +47,10 @@ export const TypingTest = () => {
   }, [inputArray]);
 
   const handleInputChange = (e) => {
-    if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(e.key)) {
+    if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(e.key)) {
       return;
     }
+    setFlag(false);
     setInputArray(e.target.value.split(""));
   };
   useEffect(() => {
@@ -81,32 +61,49 @@ export const TypingTest = () => {
       });
     }
   }, [arr]);
-
+  if (textArray.length === 0) {
+    return null;
+  }
+  console.log(flag, textArray);
   return (
     <div>
       <div className="textbox-solo">
-      {arr.map((item) => (
-        
-        <span
-        style={{
-          color: item.color,
-          textDecoration:
-          item.ind === inputArray.length ? "underline" : "none",
-        }}
-        className="characters-solo"
-        ref={(item.ind === inputArray.length || item.ind === 0) ? underlinedElementRef : null}
-        >
-          {item.char}
-        </span>
-      ))}
+        {flag
+          ? textArray.map((item) => (
+              <span
+                style={{
+                  color: "black",
+                }}
+                className="characters-solo"
+              >
+                {item}
+              </span>
+            ))
+          : arr.map((item) => (
+              <span
+                style={{
+                  color: item.color,
+                  textDecoration:
+                    item.ind === inputArray.length ? "underline" : "none",
+                }}
+                className="characters-solo"
+                ref={
+                  item.ind === inputArray.length || item.ind === 0
+                    ? underlinedElementRef
+                    : null
+                }
+              >
+                {item.char}
+              </span>
+            ))}
       </div>
-      <input value={inputArray.join("")} onChange={handleInputChange} className="input-box-solo"></input>
-      <div className="speed-solo">
-        Speed (Words per minute)
-      </div>
-      <div className="acc-solo">
-        rustee
-      </div>
+      <input
+        value={inputArray.join("")}
+        onChange={handleInputChange}
+        className="input-box-solo"
+      ></input>
+      <div className="speed-solo">Speed (Words per minute)</div>
+      <div className="acc-solo">rustee</div>
     </div>
   );
 };
