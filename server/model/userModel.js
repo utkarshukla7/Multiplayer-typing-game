@@ -7,7 +7,7 @@ const userSchema = new mongoose.Schema(
             required: true,
             trim: true
         },
-        gameid: {
+        roomid: {
             type: String,
             required: true
         },

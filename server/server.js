@@ -7,6 +7,7 @@ import http from 'http'
 import mongoose from "mongoose";
 import connectdb from "./db.js"
 import { Server } from "socket.io";
+import Operate from "./socket.js";
 
 dotenv.config();
 //express app
@@ -30,12 +31,10 @@ const io = new Server(server,{
   }
 });
 
-io.on("connection", (socket) => {
-  console.log(`user connected: ${socket.id}`);
-});
+Operate(io);
 
 const port = process.env.PORT || 5000;
 
-app.listen(port, () => {
+server.listen(port, () => {
   console.log(`RUNNING ${port}`);
 });
