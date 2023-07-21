@@ -1,12 +1,12 @@
 import { useState } from "react";
 import "./multi.css";
-import io from "socket.io-client";
 import { useNavigate } from "react-router-dom";
-const socket = io.connect("http://localhost:5000");
+import socket from "../socket.js";
 
 export const Multi = () => {
-  const [joinRoomid, setJoinRoomid] = useState("");
+  const [showJoin, setJoin] = useState(false);
   const [gameType, setGameType] = useState("public");
+  const [inpId, setInpId] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
@@ -14,20 +14,35 @@ export const Multi = () => {
     console.log("Game Type:", gameType);
     const username = localStorage.getItem("username");
     socket.emit("createGame", { username, gameType });
-    await socket.on("gameCreated", (data) => {
-      console.log(data.message);
+    socket.on("gameCreated", (data) => {
       console.log(data.roomid);
       navigate(`/lobby/${data.roomid}`);
     });
   };
-  const handleIDchange = (e) => {
-    setJoinRoomid(e.target.value);
+
+  const handleJoin = async (e) => {
+    e.preventDefault();
+    console.log(inpId);
+    const username = localStorage.getItem("username");
+    socket.emit("joingame", { username, inpId });
+    socket.on("Success", () => {
+      navigate(`/lobby/${inpId}`);
+    });
+    socket.on("LobbyFull", () => {
+      alert("Lobby is full !!");
+    });
+    socket.on("Invalid", () => {
+      alert("Invalid Room Id");
+    });
   };
-  const handleJoinWithId = () => {
-    socket.emit("joingame", { joinRoomid });
-  };
-  const handleJoin = () => {
-    console.log("hi");
+
+  const handleRandomjoin = async () => {
+    const username = localStorage.getItem("username");
+    socket.emit("randomjoin", { username });
+    socket.on("success", (data) => {
+      console.log(data.roomid, "randomjoin");
+      navigate(`/lobby/${data.roomid}`);
+    });
   };
   return (
     <div className="multi-container">
@@ -59,29 +74,21 @@ export const Multi = () => {
           </form>
         </div>
         <div>
-          <h1>Join a game</h1>
-          <div>
-            <input
-              value={joinRoomid}
-              onChange={handleIDchange}
-              placeholder="Enter room ID"
-            ></input>
-            <button
-              type="submit"
-              className="btn btn-primary"
-              onClick={handleJoinWithId}
-            >
+          <form onSubmit={handleJoin}>
+            <h1>Join a game</h1>
+            <button className="btn btn-primary" type="submit">
               Join
             </button>
-          </div>
-          <button
-            type="submit"
-            className="btn btn-primary"
-            onClick={handleJoin}
-          >
-            Join random lobby
-          </button>
+            <input
+              type="text"
+              onChange={(e) => setInpId(e.target.value)}
+              value={inpId}
+            />
+          </form>
         </div>
+        <button className="btn btn-primary" onClick={handleRandomjoin}>
+          Random Join
+        </button>
       </div>
     </div>
   );
