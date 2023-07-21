@@ -6,8 +6,14 @@ import { Homepage } from "./pages/Homepage";
 import { Routes, Route } from "react-router-dom";
 import { Single } from "./pages/Single";
 import { Multi } from "./pages/Multi";
+import { useEffect } from "react";
+import io from "socket.io-client";
+const socket = io("http://localhost:5000");
 
 function App() {
+  
+
+
   return (
     <>
       <Routes>

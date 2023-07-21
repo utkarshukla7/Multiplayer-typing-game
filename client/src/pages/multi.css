@@ -1,0 +1,30 @@
+.multi-container::before {
+    content: "";
+    background-image: url("../CarLandscape-HQ-01.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    filter: blur(4px); /* Adjust the blur strength as needed */
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    border: none;
+  }
+.joining-div{
+    background-color: white;
+    top: 19vh;
+    left: 31vw;
+    height: 64vh;
+    width: 40vw;
+    display: flex;
+    position: absolute;
+    flex-direction: column;
+    border-radius: 10px;
+    z-index: 2;
+    align-items: center;
+    justify-content: space-evenly;
+}
