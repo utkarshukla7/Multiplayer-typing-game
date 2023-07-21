@@ -46,6 +46,7 @@ export const Multi = () => {
         navigate(`/lobby/${data.roomid}`);
     });
   }
+  
   return (
     <div className="multi-container">
 
