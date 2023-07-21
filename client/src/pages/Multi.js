@@ -44,10 +44,13 @@ export const Multi = () => {
       navigate(`/lobby/${data.roomid}`);
     });
   };
+  const handleMultiClose = () => {
+    navigate("/single");
+  };
   return (
     <div className="multi-container">
       <div className="close-button">
-        <button className="go-back-button">
+        <button className="go-back-button" onClick={handleMultiClose}>
           <span className="X" />
           <span className="Y" />
           <div className="close">Close</div>

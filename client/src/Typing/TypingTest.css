@@ -1,5 +1,61 @@
 @import url(https://fonts.googleapis.com/css?family=Orbitron);
 
+.modal-title{
+    left :5vw !important;
+    font-family: 'Orbitron',sans-serif;
+    font-weight: 900 !important;
+    font-size:3vh;
+}
+.modal-body{
+    display: flex;
+    flex-direction: column;
+
+}
+.big-text{
+    display: flex;
+    flex-direction: row;
+    font-family: 'Orbitron',sans-serif;
+    font-weight: 900 !important;
+    font-size:3vh;
+}
+.big-text-wpm{
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Orbitron',sans-serif;
+    font-weight: 900 !important;
+    font-size:3vh;
+    justify-content: center;
+    align-items: center;
+}
+
+.big-text-accuracy{
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Orbitron',sans-serif;
+    font-weight: 900;
+    font-size: 3vh;
+    justify-content: center;
+    align-items: center;
+}
+.small-text{
+    margin-top: 4vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: 'Orbitron',sans-serif;
+    font-weight: 900;
+    font-size: 2vh;
+}
+.small-text-content{
+    margin-bottom: 1vh;
+}
+.modal-footer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 .remaining-time{
     top: 0vh;
     left: 49vw;

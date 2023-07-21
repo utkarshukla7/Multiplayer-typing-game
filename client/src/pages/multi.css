@@ -1,6 +1,8 @@
 .go-back-button {
-  position: relative;
-  width: 6em;
+  position: absolute;
+  top: 1vh;
+    left: 2vw;
+  width: 4vw;
   height: 4em;
   border: none;
   background: none;
@@ -47,17 +49,7 @@
   opacity: 0;
 }
 
-.go-back-button:hover {
-  background-color: rgb(210, 0, 0);
-}
 
-.go-back-button:active {
-  background-color: rgb(130, 0, 0);
-}
-
-.go-back-button:hover > .close {
-  animation: close 0.2s forwards 1.25s;
-}
 
 @keyframes close {
   100% {

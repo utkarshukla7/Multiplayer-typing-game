@@ -222,16 +222,16 @@ export const UserPopUp = ({ onUpdate }) => {
           <Button
             variant="primary"
             onClick={handleButtonClickSingle}
-            className="popup-btn-1"
+            className="popup-btn-1 popup-btn"
           >
-            Single
+            Practice
           </Button>
           <Button
             variant="primary"
             onClick={handleButtonClickMulti}
-            className="popup-btn-2"
+            className="popup-btn-2 popup-btn"
           >
-            Multi
+            Play
           </Button>
         </div>
       </div>

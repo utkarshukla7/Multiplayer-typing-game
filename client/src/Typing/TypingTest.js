@@ -12,10 +12,12 @@ export const TypingTest = (props) => {
   const underlinedElementRef = useRef(null);
   const [level, setLevel] = useState(1);
   const [time, setTime] = useState(30);
-
+  const [stats, setStats] = useState(false);
   const [count, setCount] = useState(30);
   const [hasstarted, sethasstarted] = useState(false);
   const [totalchar, setTotalchar] = useState(0);
+  const modalRef = useRef(null);
+
   // console.log("hi from tester", props.time);
   const times = useRef({
     startTime: null,
@@ -28,6 +30,8 @@ export const TypingTest = (props) => {
     setTime(props.time);
     setLevel(props.level);
     setCount(props.time);
+    setInputArray([]);
+    setTotalchar(0);
   }, [props.time, props.level]);
   // console.log(time, level);
   useEffect(() => {
@@ -83,6 +87,7 @@ export const TypingTest = (props) => {
     if (times.current.timeDifference) {
       console.log(times.current.timeDifference, "diff");
       if (times.current.timeDifference / 1000 > time) {
+        handleend();
         return;
       }
     }
@@ -123,13 +128,26 @@ export const TypingTest = (props) => {
   const handleend = () => {
     if (times.current.endTime !== null) {
       setCount(0);
+      setStats(true);
+      console.log(stats);
       console.log("words over");
     } else {
+      setStats(true);
       console.log("time over");
     }
-    alert(totalchar);
+    console.log(stats);
+
     // navigate("/");
   };
+
+  useEffect(() => {
+    if (stats) {
+      // Show the modal when stats becomes true
+      const modalElement = document.getElementById("exampleModal");
+      const modal = new window.bootstrap.Modal(modalElement);
+      modal.show();
+    }
+  }, [stats]);
   const handlekeypress = (e) => {
     if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(e.key)) {
       e.preventDefault();
@@ -139,16 +157,37 @@ export const TypingTest = (props) => {
   const handlePaste = (event) => {
     event.preventDefault();
   };
+  const handleContinuePractice = () => {
+    setStats(false);
+    window.location.reload();
+  };
 
   useEffect(() => {
     if (count === 0) {
       handleend();
     }
   }, [count]);
-
+  useEffect(() => {
+    if (stats) {
+      const modalElement = document.getElementById("exampleModal");
+      const modal = new window.bootstrap.Modal(modalElement);
+      modalRef.current = modal;
+      modal.show();
+    } else {
+      if (modalRef.current) {
+        modalRef.current.hide();
+        document.body.classList.remove("modal-open");
+        const backdrop = document.querySelector(".modal-backdrop");
+        if (backdrop) {
+          backdrop.remove();
+        }
+      }
+    }
+  }, [stats]);
   if (textArray.length === 0) {
     return null;
   }
+
   return (
     <div>
       <div className="remaining-time">{count}</div>
@@ -208,6 +247,74 @@ export const TypingTest = (props) => {
                 {ind}--ind */}
         </div>
       </div>
+      {stats && (
+        <div
+          className="modal fade"
+          id="exampleModal"
+          tabIndex={-1}
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div className="modal-dialog modal-dialog-centered">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h1 className="modal-title fs-5" id="exampleModalLabel">
+                  Result
+                </h1>
+                <button
+                  type="button"
+                  className="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                />
+              </div>
+              <div className="modal-body">
+                <div className="big-text">
+                  <div className="big-text-wpm">
+                    <span>WPM</span>
+                    <span>
+                      {count === time
+                        ? 0
+                        : (((ind / (level + 4)) * 60) / (time - count)).toFixed(
+                            0
+                          )}
+                    </span>
+                  </div>
+                  <div className="big-text-accuracy">
+                    <span>Accuracy</span>
+                    <span>
+                      {totalchar === 1
+                        ? 0
+                        : (((ind + 1) / (totalchar - 1)) * 100).toFixed(0)}
+                      %
+                    </span>
+                  </div>
+                </div>
+                <div className="small-text">
+                  <span className="small-text-content">
+                    Total characters : {totalchar - 1}
+                  </span>
+                  <span className="small-text-content">
+                    Correct characters : {ind + 1}
+                  </span>
+                  <span className="small-text-content">
+                    Wrong characters : {totalchar - ind - 2}
+                  </span>
+                </div>
+              </div>
+              <div className="modal-footer">
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={handleContinuePractice}
+                >
+                  Continue praticing
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
