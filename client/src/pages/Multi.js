@@ -46,6 +46,13 @@ export const Multi = () => {
   };
   return (
     <div className="multi-container">
+      <div className="close-button">
+        <button className="go-back-button">
+          <span className="X" />
+          <span className="Y" />
+          <div className="close">Close</div>
+        </button>
+      </div>
       <div className="joining-div">
         <div>
           <h2>Create a Game</h2>

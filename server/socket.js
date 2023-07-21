@@ -9,36 +9,111 @@ const public_lobbies = {};
 export const Operate = (io) => {
   io.on("connection", (socket) => {
     console.log(`user connected: ${socket.id}`);
+
+    function startTimer(lobbyId) {
+      let seconds = 30;
+
+      const interval = setInterval(() => {
+        //   io.to(lobbyId).emit('timerUpdate', seconds);
+        seconds--;
+        console.log(seconds);
+        if (seconds <= 0) {
+          clearInterval(interval);
+          // io.to(lobbyId).emit('typingTestEnded');
+        }
+      }, 1000);
+    }
+
     socket.on("createGame", async (data) => {
       const text = await generateTextbackend();
       const time = new Date();
       let roomid = generator.generate({ length: 10, numbers: true });
+      while (lobbies.hasOwnProperty(roomid)) {
+        roomid = generator.generate({ length: 10, numbers: true });
+      }
+      lobbies[roomid] = { users: [data.username] };
+      socket.join(roomid);
+      socket.emit("gameCreated", { roomid });
+      // io.to(roomid).emit("userUpdate",lobbies[roomid]);
+    });
 
-      const user = await new userModel({
-        name: data.username,
-        roomid,
-      }).save();
+    socket.on("joingame", (data) => {
+      // delete empty lobbies
+      if (!lobbies[data.inpId]) {
+        socket.emit("Invalid");
+      }
 
-      const game = await new gameModel({
-        mode: data.gameType === "public" ? 0 : 1,
-        roomid,
-        players: [
-          {
-            playerid: data.username,
-            wpm: 0,
-            accuracy: 0,
-          },
-        ],
-        text,
-        time,
-        gamelevel: 1,
-      }).save();
+      if (lobbies[data.inpId].users.length >= 5) {
+        socket.emit("LobbyFull");
+        return;
+      }
 
-      const response = {
-        message: "Game created successfully",
-        roomid,
-      };
-      socket.emit("gameCreated", response);
+      socket.join(data.inpId);
+      lobbies[data.inpId].users.push(data.username);
+      io.to(data.inpId).emit("usersUpdate", lobbies[data.inpId].users);
+      socket.emit("Success");
+    });
+
+    socket.on("randomjoin", (data) => {
+      let roomid = "";
+      for (const i in public_lobbies) {
+        if (public_lobbies[i].users.length >= 5) continue;
+        if (lobbies.hasOwnProperty(i)) continue;
+        roomid = public_lobbies[i];
+        break;
+      }
+      if (roomid === "") {
+        roomid = generator.generate({ length: 10, numbers: true });
+        public_lobbies[roomid] = { users: [data.username] };
+        socket.emit("success", { roomid });
+      } else {
+        socket.emit("success", { roomid });
+      }
+    });
+
+    socket.on("leaveLobby", (data) => {
+      if (lobbies[data.roomid]) {
+        const index = lobbies[data.roomid].users.indexOf(data.username);
+        if (index !== -1) {
+          lobbies[data.roomid].users.splice(index, 1);
+        }
+
+        if (lobbies[data.roomid].users.length === 0) {
+          delete lobbies[data.roomid];
+        } else {
+          io.to(data.roomid).emit("usersUpdate", lobbies[data.roomid]);
+        }
+      }
+    });
+
+    socket.on("leavepublicLobby", (data) => {
+      if (public_lobbies[data.roomid]) {
+        const index = public_lobbies[data.roomid].users.indexOf(data.username);
+        if (index !== -1) {
+          public_lobbies[data.roomid].users.splice(index, 1);
+        }
+
+        if (public_lobbies[data.roomid].users.length === 0) {
+          delete public_lobbies[data.roomid];
+        } else {
+          io.to(data.roomid).emit("usersUpdate", public_lobbies[data.roomid]);
+        }
+      }
+    });
+
+    socket.on("startTypingTest", (lobbyid) => {
+      const lobby = lobbies.hasOwnProperty(lobbyid)
+        ? lobbies[lobbyid]
+        : public_lobbies[lobbyid];
+      console.log(lobbyid);
+      console.log(lobby);
+      if (lobby && lobby.users.length >= 1) {
+        io.to(lobbyid).emit("typingTestStarted");
+        console.log("here");
+        startTimer(lobbyid);
+      } else {
+        socket.emit("notEnoughUsers");
+      }
     });
   });
 };
