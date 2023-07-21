@@ -1,3 +1,61 @@
+.go-back-button {
+  position: absolute;
+  top: 1vh;
+    left: 2vw;
+  width: 4vw;
+  height: 4em;
+  border: none;
+  background: none;
+}
+
+.X {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 33%;
+  width: 2em;
+  height: 1.5px;
+  background-color: black;
+  transform: rotate(45deg);
+  font-weight: 1000;
+}
+
+.Y {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 33%;
+  width: 2em;
+  height: 1.5px;
+  background-color: black;
+  transform: rotate(-45deg);
+  font-weight: 1000;
+}
+
+.close {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  bottom: -40%;
+  left: 70%;
+  width: 3em;
+  height: 1.7em;
+  font-size: 16px;
+  background-color: rgb(254, 255, 225);
+  color: #000;
+  border: 1px solid #000;
+  pointer-events: none;
+  opacity: 0;
+}
+
+
+
+@keyframes close {
+  100% {
+    opacity: 1;
+  }
+}
 .multi-container::before {
     content: "";
     background-image: url("../CarLandscape-HQ-01.jpg");
