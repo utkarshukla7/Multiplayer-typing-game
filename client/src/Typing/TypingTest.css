@@ -1,5 +1,17 @@
 @import url(https://fonts.googleapis.com/css?family=Orbitron);
 
+.remaining-time{
+    top: 0vh;
+    left: 49vw;
+    position: absolute;
+    font-family: 'Orbitron',sans-serif;
+    font-weight: 900;
+    font-size: 7vh;
+    /* text-align: center; */
+    align-items: center;
+    justify-content: center;
+    
+}
 .input-box-solo{
     position: absolute;
     top: 41vh;
