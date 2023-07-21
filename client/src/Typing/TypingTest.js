@@ -87,9 +87,6 @@ export const TypingTest = () => {
     if (!hasstarted) {
       sethasstarted(true);
     }
-    if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(e.key)) {
-      return;
-    }
     setFlag(false);
     setInputArray(e.target.value.split(""));
     sethasstarted(true);
@@ -125,6 +122,15 @@ export const TypingTest = () => {
     }
     alert(totalchar);
     // navigate("/");
+  };
+  const handlekeypress = (e) => {
+    if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(e.key)) {
+      e.preventDefault();
+      return;
+    }
+  }
+  const handlePaste = (event) => {
+    event.preventDefault();
   };
 
   useEffect(() => {
@@ -173,12 +179,20 @@ export const TypingTest = () => {
         value={inputArray.join("")}
         onChange={handleInputChange}
         className="input-box-solo"
+        onKeyDown={handlekeypress}
+        onPaste={handlePaste}
       ></input>
-      <div className="speed-solo">Speed (Wpm)-- {count === 30 ? 0 : ((ind/5)*60/(30-count)).toFixed(0)}
+      <div className="speed-solo">Speed (Wpm)
+      <div className="speed-value">
+        {count === 30 ? 0 : ((ind/5)*60/(30-count)).toFixed(0)}
       </div>
-      <div className="acc-solo">{totalchar === 1 ? 0 :(((ind + 1)/(totalchar - 1)) * 100).toFixed(0)}%
-                {totalchar - 1}-- totalchar
-                {ind}--ind
+      </div>
+      <div className="acc-solo">Accuracy
+                <div className="acc-value">
+                {totalchar === 1 ? 0 :(((ind + 1)/(totalchar - 1)) * 100).toFixed(0)}%
+                {/* {totalchar - 1}-- totalchar
+                {ind}--ind */}
+                </div>
       </div>
     </div>
   );

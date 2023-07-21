@@ -3,9 +3,14 @@ import morgan from "morgan";
 import cors from "cors";
 import dotenv from "dotenv";
 import utilityRoute from "./routes/utilityRoute.js";
+import initializeSocket from "./helper/TypingRace.js";
+import http from 'http'
+
 dotenv.config();
 //express app
 const app = express();
+const server = http.createServer(app);
+initializeSocket(server);
 
 //middleware
 app.use(express.json());
