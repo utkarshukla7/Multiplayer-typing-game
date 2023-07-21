@@ -1,8 +1,8 @@
 import { useState } from "react";
 import "./multi.css";
-import io from "socket.io-client"
 import { useNavigate } from "react-router-dom";
-const socket = io.connect("http://localhost:5000");
+import socket from '../socket.js'
+
 
 export const Multi = () => {
 
@@ -24,6 +24,7 @@ export const Multi = () => {
 
   const handleJoin = async(e)=>{
     e.preventDefault();
+    console.log(inpId);
     const username = localStorage.getItem("username");
     socket.emit("joingame",{username,inpId});
     socket.on("Success",()=>{
@@ -37,6 +38,14 @@ export const Multi = () => {
     })
   };
 
+  const handleRandomjoin = async()=>{
+    const username = localStorage.getItem("username");
+    socket.emit("randomjoin",{username});
+    socket.on("success",(data)=>{
+        console.log(data.roomid, "randomjoin");
+        navigate(`/lobby/${data.roomid}`);
+    });
+  }
   return (
     <div className="multi-container">
 
@@ -72,6 +81,7 @@ export const Multi = () => {
             <input type="text" onChange={(e)=>setInpId(e.target.value)} value={inpId}/>
           </form>
         </div>
+        <button className="btn btn-primary" onClick={handleRandomjoin}>Random Join</button>
       </div>
     </div>
   );
