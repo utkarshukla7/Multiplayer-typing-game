@@ -10,22 +10,7 @@ const public_lobbies = {};
 export const Operate = (io) => {
 
     io.on("connection", (socket) => {
-
         console.log(`user connected: ${socket.id}`);
-
-        function startTimer(lobbyId){
-            let seconds = 30;
-          
-            const interval = setInterval(() => {
-            //   io.to(lobbyId).emit('timerUpdate', seconds);
-              seconds--;
-              console.log(seconds);
-              if (seconds <= 0) {
-                clearInterval(interval);
-                // io.to(lobbyId).emit('typingTestEnded');
-              }
-            }, 1000);
-        }
 
         socket.on("createGame", async(data) => {
             const text = await generateTextbackend();
@@ -34,7 +19,7 @@ export const Operate = (io) => {
             while(lobbies.hasOwnProperty(roomid)){
                 roomid = generator.generate({length:10, numbers:true});
             }
-            lobbies[roomid] = {users : [data.username]};
+            lobbies[roomid] = {users : [data.username], text, time};
             socket.join(roomid);
             socket.emit('gameCreated',{roomid});
             // io.to(roomid).emit("userUpdate",lobbies[roomid]);
@@ -57,20 +42,32 @@ export const Operate = (io) => {
             socket.emit("Success");
           });
 
-          socket.on('randomjoin', (data) => {
+          socket.on('randomjoin', async(data) => {
+            console.log(socket.id, "socket id");
             let roomid = "";
-            for(const i in public_lobbies){
+            const keys = Object.keys(public_lobbies);
+            console.log(keys);
+            for(let i of keys){
                 if(public_lobbies[i].users.length >= 5) continue;
                 if(lobbies.hasOwnProperty(i)) continue;
-                roomid = public_lobbies[i];
+                roomid = i;
                 break;
             }
+            console.log(roomid);
             if(roomid === "") {
-                roomid = generator.generate({length:10, numbers:true});
-                public_lobbies[roomid] = {users : [data.username]};
+                const text = await generateTextbackend();
+                const time = new Date();
+                let roomid = generator.generate({length:10, numbers:true});
+                while(lobbies.hasOwnProperty(roomid)){
+                  roomid = generator.generate({length:10, numbers:true});
+                }
+                public_lobbies[roomid] = {users : [data.username], time, text};
+                socket.join(roomid);
                 socket.emit("success",{roomid});
             }
             else{
+                public_lobbies[roomid].users.push(data.username);
+                socket.join(roomid);
                 socket.emit("success",{roomid});
             }
         });
@@ -110,9 +107,17 @@ export const Operate = (io) => {
             console.log(lobbyid);
             console.log(lobby);
             if (lobby && lobby.users.length >= 1) {
-              io.to(lobbyid).emit('typingTestStarted');
-            console.log("here");
-              startTimer(lobbyid);
+              console.log("here");
+              let seconds = 5;
+              const interval = setInterval(() => {
+                seconds--;
+                console.log(seconds);
+                io.to(lobbyid).emit('timerUpdate', seconds);
+                if (seconds <= 0) {
+                  clearInterval(interval);
+                  io.to(lobbyid).emit('testStarted', lobby.text);
+                }
+              }, 1000);
             } else {
               socket.emit('notEnoughUsers');
             }
