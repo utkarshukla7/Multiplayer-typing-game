@@ -20,7 +20,7 @@ export const Operate = (io) => {
             //   io.to(lobbyId).emit('timerUpdate', seconds);
               seconds--;
               console.log(seconds);
-              if (seconds < 0) {
+              if (seconds <= 0) {
                 clearInterval(interval);
                 // io.to(lobbyId).emit('typingTestEnded');
               }
@@ -106,10 +106,12 @@ export const Operate = (io) => {
         });
 
           socket.on("startTypingTest", (lobbyid) => {
-            const lobby = lobbies[lobbyid];
+            const lobby = (lobbies.hasOwnProperty(lobbyid) ? lobbies[lobbyid]: public_lobbies[lobbyid]);
             console.log(lobbyid);
-            if (lobby && lobby.users.length >= 2) {
+            console.log(lobby);
+            if (lobby && lobby.users.length >= 1) {
               io.to(lobbyid).emit('typingTestStarted');
+            console.log("here");
               startTimer(lobbyid);
             } else {
               socket.emit('notEnoughUsers');
