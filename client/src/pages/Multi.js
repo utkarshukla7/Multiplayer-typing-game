@@ -57,47 +57,40 @@ export const Multi = () => {
         </button>
       </div>
       <div className="joining-div">
-        <div>
-          <h2>Create a Game</h2>
-          <form onSubmit={handleSubmit}>
-            <label>
-              <input
-                type="radio"
-                value="public"
-                checked={gameType === "public"}
-                onChange={() => setGameType("public")}
-              />
-              Public
-            </label>
-            <label>
-              <input
-                type="radio"
-                value="private"
-                checked={gameType === "private"}
-                onChange={() => setGameType("private")}
-              />
-              Private
-            </label>
-            <button className="btn btn-primary" type="submit">
-              Create
+        <div className="create-lobby">
+          <form onSubmit={handleSubmit} className="create-lobby-form">
+            <button className="create-lobby-btn" type="submit">
+              Create Lobby
             </button>
+            <div className="private-checker">
+              <label className="private-txt">keep it private?</label>
+              <label className="checkBox">
+                <input
+                  type="checkbox"
+                  id="ch1"
+                  onChange={() => setGameType("private")}
+                />
+                <div className="transition" />
+              </label>
+            </div>
           </form>
         </div>
-        <div>
+        <div className="join-lobby">
           <form onSubmit={handleJoin}>
-            <h1>Join a game</h1>
-            <button className="btn btn-primary" type="submit">
-              Join
-            </button>
             <input
+              placeholder="Lobby ID"
               type="text"
+              className="lobby-id-input"
               onChange={(e) => setInpId(e.target.value)}
               value={inpId}
             />
+            <button className="lobby-id-btn" type="submit">
+              Join
+            </button>
           </form>
         </div>
-        <button className="btn btn-primary" onClick={handleRandomjoin}>
-          Random Join
+        <button className="random-join-btn" onClick={handleRandomjoin}>
+          Join Public Lobby
         </button>
       </div>
     </div>
