@@ -25,7 +25,9 @@ export const TypingTest = (props) => {
     timeDifference: null,
     started: false,
   });
+  
   const navigate = useNavigate();
+
   useEffect(() => {
     setTime(props.time);
     setLevel(props.level);
@@ -34,6 +36,8 @@ export const TypingTest = (props) => {
     setTotalchar(0);
   }, [props.time, props.level]);
   // console.log(time, level);
+
+
   useEffect(() => {
     axios
       .post("http://localhost:5000/api/utility/generatetext", { level: level })
@@ -45,6 +49,8 @@ export const TypingTest = (props) => {
         }
       });
   }, [level, time]);
+
+
   useEffect(() => {
     setTotalchar((prevkey) => prevkey + 1);
     console.log(totalchar);
@@ -53,7 +59,6 @@ export const TypingTest = (props) => {
       times.current.startTime = new Date();
       console.log(times.current.startTime, "start");
     }
-
     const temp = [];
     let c = 0;
     const giveColor = (index) => {
@@ -96,6 +101,8 @@ export const TypingTest = (props) => {
     }
   }, [inputArray]);
 
+
+
   const handleInputChange = (e) => {
     if (!hasstarted) {
       sethasstarted(true);
@@ -105,6 +112,8 @@ export const TypingTest = (props) => {
     sethasstarted(true);
   };
 
+
+
   useEffect(() => {
     if (underlinedElementRef.current) {
       underlinedElementRef.current.scrollIntoView({
@@ -113,6 +122,8 @@ export const TypingTest = (props) => {
       });
     }
   }, [arr]);
+
+
 
   useEffect(() => {
     let interval;
@@ -125,6 +136,8 @@ export const TypingTest = (props) => {
     return () => clearInterval(interval);
   }, [hasstarted]);
 
+
+
   const handleend = () => {
     if (times.current.endTime !== null) {
       setCount(0);
@@ -135,9 +148,6 @@ export const TypingTest = (props) => {
       setStats(true);
       console.log("time over");
     }
-    console.log(stats);
-
-    // navigate("/");
   };
 
   useEffect(() => {
@@ -148,12 +158,16 @@ export const TypingTest = (props) => {
       modal.show();
     }
   }, [stats]);
+
+
+
   const handlekeypress = (e) => {
     if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(e.key)) {
       e.preventDefault();
       return;
     }
   };
+  
   const handlePaste = (event) => {
     event.preventDefault();
   };
@@ -162,11 +176,15 @@ export const TypingTest = (props) => {
     window.location.reload();
   };
 
+
   useEffect(() => {
     if (count === 0) {
       handleend();
     }
   }, [count]);
+
+
+
   useEffect(() => {
     if (stats) {
       const modalElement = document.getElementById("exampleModal");
@@ -184,6 +202,7 @@ export const TypingTest = (props) => {
       }
     }
   }, [stats]);
+
   if (textArray.length === 0) {
     return null;
   }
@@ -227,6 +246,11 @@ export const TypingTest = (props) => {
         className="input-box-solo"
         onKeyDown={handlekeypress}
         onPaste={handlePaste}
+        oncontextmenu="return false;" 
+        autocomplete="off"
+        onClick={(e) => {
+          e.target.setSelectionRange(e.target.value.length, e.target.value.length);
+        }}
       ></input>
       <div className="speed-solo">
         Speed (Wpm)
@@ -266,6 +290,9 @@ export const TypingTest = (props) => {
                   className="btn-close"
                   data-bs-dismiss="modal"
                   aria-label="Close"
+                  onClick={() => {
+                    window.location.reload();
+                  }}
                 />
               </div>
               <div className="modal-body">

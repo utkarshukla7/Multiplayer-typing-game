@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import socket from "../socket.js";
 
 export const Multi = () => {
-  const [showJoin, setJoin] = useState(false);
   const [gameType, setGameType] = useState("public");
   const [inpId, setInpId] = useState("");
   const navigate = useNavigate();
@@ -33,6 +32,7 @@ export const Multi = () => {
     });
     socket.on("Invalid", () => {
       alert("Invalid Room Id");
+      window.location.reload();
     });
   };
 

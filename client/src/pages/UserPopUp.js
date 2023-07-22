@@ -2,6 +2,7 @@ import "./UserPopUp.css";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "react-bootstrap/Button";
+import socket from "../socket.js"
 
 export const UserPopUp = ({ onUpdate }) => {
   const navigate = useNavigate();
@@ -202,11 +203,13 @@ export const UserPopUp = ({ onUpdate }) => {
   const handleButtonClickSingle = () => {
     console.log(username);
     localStorage.setItem("username", username);
+    socket.emit("entered",{username});
     navigate("/single");
   };
   const handleButtonClickMulti = () => {
     console.log(username);
     localStorage.setItem("username", username);
+    socket.emit("entered",{username});
     navigate("/multi");
   };
   return (
