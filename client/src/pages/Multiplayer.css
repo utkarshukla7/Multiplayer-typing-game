@@ -1,3 +1,5 @@
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap');
+
 .whole-multiplayer {
     background-image: url("./Road.jpg");
     width: 100%; 
@@ -20,21 +22,49 @@
     font-size: 1.5rem;
     background-color: white;
 }
-.input-box-multi:focus {
-    outline: none;
-    border: none; 
-}
-.acc-multi{
+.acc-multiple{
     position: absolute;
-    top: 52vh;
+    top: 48vh;
     left: 11.5vw;
-    background-color: red;
+    background-color: rgb(255, 255, 255);
+    width: 14vw;
+    height: 18vh;
+    font-size: 1.5rem;
+    text-align: center;
+    font-weight: 900;
+    font-family: 'Orbitron',sans-serif;;
+    background-color: #F0DE36;
+    border-radius: 10px;
+    box-shadow: 1px 3px 11px 4px black;
+    /* font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; */
 }
-.speed-multi{
+.acc-value-multi{
+    text-align: center;
+    font-weight: 900;
+    font-family: 'Orbitron',sans-serif;
+    font-size: 7vh;
+}
+.speed-multiple{
     top: 48vh;
     position: absolute;
     left: 78vw;
-    background-color: red;
+    background-color: rgb(255, 255, 255);
+    width: 14vw;
+    height: 18vh;
+    text-align: center;
+    font-size: 1.5rem;
+    font-family: 'Orbitron',sans-serif;
+    font-weight: 900 !important;
+    /* font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; */
+    background-color: #F0DE36;
+    border-radius: 10px;
+    box-shadow: 1px 3px 11px 4px black;
+}
+.speed-value-multi{
+    text-align: center;
+    font-family: 'Orbitron',sans-serif;
+    /* font-weight: 900; */
+    font-size: 8vh;
 }
 .multiplayer-textbox{
     top: 18vh;
@@ -52,4 +82,100 @@
     padding-top: 0%;
     padding-left: 0.7%;
     padding-right: 0.7%;
+}
+.remtime{
+    top: 18vh;
+    position: absolute;
+    left: 32vw;
+    width: 40.6vw;
+    height: 19vh;
+    font-size: 2.2rem;
+    text-align: justify;
+    background-color: rgb(194, 193, 193);
+    z-index: 2;
+    border-radius: 10px;
+    text-align: center; 
+    display: flex;
+    padding-top: 2%;
+    flex-direction: column;   
+}
+.start-btn{
+    position: absolute;
+    left: 48vw;
+    width: 7vw;
+    height: 7vh;
+    z-index: 2;
+    top: 5.5vh;
+    font-size: 1.7rem;
+}
+.copybtn{
+    position: absolute;
+    left: 1vw;
+    width: 7vw;
+    height: 2vh;
+    z-index: 2;
+    top: 1.5vh;
+    font-size: 1.4rem;
+    font-weight: bold;
+}
+.room-id{
+    position: absolute;
+    left:4vw;
+    width: 7vw;
+    height: 2vh;
+    z-index: 2;
+    top: 5.5vh;
+}
+.timer{
+    position: absolute;
+    left: 48.5vw;
+    width: 7vw;
+    height: 7vh;
+    z-index: 2;
+    top: 4vh;
+    font-size: 4.2rem;
+    font-family: 'Orbitron',sans-serif;
+    font-weight: 900;
+}
+.backtolobby-btn{
+    position: absolute;
+    top: 19vh;
+    left: 74vw;
+    box-shadow: 0 0 5px 1px #00000092;;
+}
+.restart-btn{
+    position: absolute;
+    top: 25vh;
+    left: 74vw;
+    box-shadow: 0 0 5px 1px #00000092;;
+}
+.other-users{
+    top: 70vh;
+    position: absolute;
+    width: 100%;
+    margin-right: 10vw;
+}
+.indi-progressbar{
+    list-style: none;
+    height: 6vh;
+}
+.indi-progressbar-div{
+    display: flex;
+    height: 6vh;
+}
+.progressbar-username{
+    font-size: 25px;
+    font-weight: 800;
+    text-shadow: #000000;
+    color: black
+}
+.result-btn{
+    position: absolute;
+    left: 48vw;
+    width: 8vw;
+    height: 8vh;
+    z-index: 2;
+    top: 56vh;
+    background-color: #000000;
+    font-size: 1.9rem;
 }

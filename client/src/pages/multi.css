@@ -86,3 +86,133 @@
     align-items: center;
     justify-content: space-evenly;
 }
+
+.create-lobby-form{
+  display: flex;
+  flex-direction: column;
+}
+
+.create-lobby-btn{
+  top:8vh;
+  left: 10vw;
+  position: absolute;
+  width: 20vw;
+  height: 10vh;
+  background-color: #000;
+  border-radius: 10px;
+  color: white;
+  font-size: xx-large;
+}
+
+.private-checker{
+  position: absolute;
+  top: 19vh;
+  left: 10.5vw;
+  display: flex;
+  flex-direction: row;
+}
+.private-txt{
+  font-size: larger;
+  margin-right: 1.7vw;
+  justify-content: center;
+  font-weight: 400;
+}
+.clear {
+  clear: both;
+}
+
+.checkBox {
+
+  cursor: pointer;
+  width: 2vh;
+  height: 2vh;
+  border: 3px solid rgba(255, 255, 255, 0);
+  border-radius: 0.6vh;
+  position: absolute;
+  top: 1.3vh;
+  left: 9vw;
+  overflow: hidden;
+  box-shadow: 0px 0px 0px 2px black;
+}
+
+.checkBox div {
+  width: 60px;
+  height: 60px;
+  background-color: black;
+  top: -52px;
+  left: -52px;
+  position: absolute;
+  transform: rotateZ(45deg);
+  z-index: 100;
+}
+
+.checkBox input[type=checkbox]:checked + div {
+  left: -10px;
+  top: -10px;
+}
+
+.checkBox input[type=checkbox] {
+  position: absolute;
+  left: 50px;
+  visibility: hidden;
+}
+
+.transition {
+  transition: 300ms ease;
+}
+
+
+.lobby-id-input {
+  position: absolute;
+  top: 33vh;
+  left: 10.5vw;
+  height: 7vh;
+  width: 15vw;
+  line-height: 28px;
+  border: 2px solid transparent;
+  border-bottom-color: #777;
+  outline: none;
+  background-color: transparent;
+  color: #0d0c22;
+  transition: .3s cubic-bezier(0.645, 0.045, 0.355, 1);
+ }
+ 
+ .lobby-id-input:focus, input:hover {
+  outline: none;
+  padding: .2rem 1rem;
+  border-radius: 1rem;
+  border-color: black;
+ }
+ 
+ .lobby-id-input::placeholder {
+  color: #777;
+ }
+ 
+ .lobby-id-input:focus::placeholder {
+  opacity: 0;
+  transition: opacity .3s;
+ }
+
+ .lobby-id-btn{
+  position: absolute;
+  top: 33vh;
+  left:26vw;
+  height: 7vh;
+  width: 4vw;
+  background-color: #000;
+  border-radius: 10px;
+  color: white;
+ }
+ 
+ 
+ .random-join-btn{
+  top: 43vh;
+  left: 10vw;
+  position: absolute;
+  width: 20vw;
+  height: 8vh;
+  background-color: #000;
+  border-radius: 10px;
+  color: white;
+  font-size: x-large;
+}

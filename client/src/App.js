@@ -8,8 +8,7 @@ import { Single } from "./pages/Single";
 import { Multi } from "./pages/Multi";
 import {Multiplayer} from "./pages/Multiplayer";
 import { useEffect } from "react";
-import io from "socket.io-client";
-const socket = io.connect("http://localhost:5000");
+import socket from "./socket.js";
 
 
 function App() {

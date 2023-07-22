@@ -1,0 +1,8 @@
+.progress{
+    width: 80% !important;
+    background-color: #e0e0de;
+    border-radius: 20px !important;
+    overflow: hidden;
+    margin-right: 7vw;
+    margin-top: 1vh;
+}
