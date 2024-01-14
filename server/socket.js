@@ -15,7 +15,7 @@ export const Operate = (io) => {
         socket.on("entered",(data)=>{
           users[socket.id] = {username: data.username, roomid: "", ongoing: false};
         })
-        console.log(`user connected: ${socket.id}`);
+        // console.log(`user connected: ${socket.id}`);
 
         socket.on("createGame", async(data) => {
             const text = await generateTextbackend();
