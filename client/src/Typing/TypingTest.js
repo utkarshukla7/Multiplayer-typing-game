@@ -40,7 +40,7 @@ export const TypingTest = (props) => {
 
   useEffect(() => {
     axios
-      .post("http://localhost:5000/api/utility/generatetext", { level: level })
+      .post("https://typeori.onrender.com/api/utility/generatetext", { level: level })
       .then((response) => {
         if (response.data.success) {
           const tt = response.data.paragraph.split("");

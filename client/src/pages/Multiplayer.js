@@ -1,10 +1,8 @@
-import Layout from "../layout/layout";
 import socket from "../socket.js";
 import { useEffect, useState, useRef } from "react";
 import "./Multiplayer.css";
 import { useNavigate } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {ProgressBar} from './progressbar.js';
 
 export const Multiplayer = () => {

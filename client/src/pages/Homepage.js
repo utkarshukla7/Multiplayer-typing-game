@@ -1,10 +1,7 @@
-import React, { useEffect, useState } from "react";
-import Layout from "../layout/layout.js";
+import React, {  useState } from "react";
 import Button from "react-bootstrap/esm/Button.js";
-import { useAuth0 } from "@auth0/auth0-react";
 import { UserPopUp } from "./UserPopUp.js";
 import "./Homepage.css";
-import socket from "../socket.js";
 export const Homepage = () => {
 
   const [popup, setPopup] = useState(false);
