@@ -1,7 +1,6 @@
 import generator from "generate-password";
 import { generateTextbackend } from "./helper/generateTextbackend.js";
-import gameModel from "./model/gameModel.js";
-import userModel from "./model/userModel.js";
+
 
 
 const lobbies = {};

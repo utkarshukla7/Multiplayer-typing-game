@@ -4,16 +4,12 @@ import cors from "cors";
 import dotenv from "dotenv";
 import utilityRoute from "./routes/utilityRoute.js";
 import http from 'http'
-import mongoose from "mongoose";
-import connectdb from "./db.js"
 import { Server } from "socket.io";
 import Operate from "./socket.js";
 
 dotenv.config();
 //express app
 const app = express();
-
-connectdb();
 
 //middleware
 app.use(express.json());
